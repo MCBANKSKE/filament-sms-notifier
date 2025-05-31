@@ -19,62 +19,37 @@ class SmsNotifierServiceProvider extends BasePackageServiceProvider
             ->hasTranslations();
     }
 
-    public function packageRegistered()
-    {
-        $this->app->singleton(SmsGatewayDriver::class, function () {
-            $config = config('smsnotifier');
-            
-            if (empty($config['api_key']) || empty($config['partner_id'])) {
-                throw new \RuntimeException('SMS API credentials are not configured. Please set SMSNOTIFIER_API_KEY and SMSNOTIFIER_PARTNER_ID in your .env file.');
-            }
-            
-            return new TextSmsGatewayDriver(
-                $config['api_key'] ?? '',
-                $config['partner_id'] ?? '',
-                $config['shortcode'] ?? 'TextSMS'
-            );
-        });
-
-        $this->app->bind('filament-sms-notifier', function () {
-            return new SmsService($this->app->make(SmsGatewayDriver::class));
-        });
-    }
-
-    public function packageBooted(): void
-    {
-        parent::packageBooted();
-
-        $this->app->singleton(SmsGatewayDriver::class, function () {
-            $config = config('smsnotifier');
-            
-            if (empty($config['api_key']) || empty($config['partner_id'])) {
-                throw new \RuntimeException('SMS API credentials are not configured. Please set SMSNOTIFIER_API_KEY and SMSNOTIFIER_PARTNER_ID in your .env file.');
-            }
-            
-            return new TextSmsGatewayDriver(
-                $config['api_key'] ?? '',
-                $config['partner_id'] ?? '',
-                $config['shortcode'] ?? 'TextSMS'
-            );
-        });
-
-        $this->app->bind(SmsService::class, function ($app) {
-            return new SmsService($app->make(SmsGatewayDriver::class));
-        });
-
-        // Register the facade
-        $this->app->bind('filament-sms-notifier', function ($app) {
-            return $app->make(SmsService::class);
-        });
-    }
-    
     public function packageRegistered(): void
     {
         parent::packageRegistered();
         
-        $this->mergeConfigFrom(
-            __DIR__.'/../../config/smsnotifier.php', 'smsnotifier'
-        );
+        // Register the driver as a singleton
+        $this->app->singleton(SmsGatewayDriver::class, function () {
+            $config = config('smsnotifier');
+            
+            if (empty($config['api_key']) || empty($config['partner_id'])) {
+                throw new \RuntimeException(
+                    'SMS API credentials are not configured. ' .
+                    'Please set SMSNOTIFIER_API_KEY and SMSNOTIFIER_PARTNER_ID in your .env file.'
+                );
+            }
+            
+            return new TextSmsGatewayDriver(
+                $config['api_key'] ?? '',
+                $config['partner_id'] ?? '',
+                $config['shortcode'] ?? 'TextSMS'
+            );
+        });
+
+        // Register the main service
+        $this->app->singleton(SmsService::class, function ($app) {
+            return new SmsService($app->make(SmsGatewayDriver::class));
+        });
+
+        // Register the facade binding
+        $this->app->bind('filament-sms-notifier', function ($app) {
+            return $app->make(SmsService::class);
+        });
         
         // Register the helper file
         if (file_exists($helpers = __DIR__.'/helpers.php')) {
