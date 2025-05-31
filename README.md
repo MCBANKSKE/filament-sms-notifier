@@ -17,21 +17,25 @@
 - ⚙️ Configurable via `.env` and `config/smsnotifier.php`
 - 🚀 Seamless integration with Filament v3
 
-## 🚀 Installation
+## 🚀 Quick Start
 
-You can install the package via composer:
+### 1. Installation
+
+Install the package via Composer:
 
 ```bash
 composer require mcbankske/filament-sms-notifier
 ```
 
-Publish the config file with:
+### 2. Publish Configuration
+
+Publish the configuration file:
 
 ```bash
 php artisan vendor:publish --tag=filament-sms-notifier-config
 ```
 
-## ⚙️ Configuration
+### 3. Configure Credentials
 
 Add your TextSMS API credentials to your `.env` file:
 
@@ -41,47 +45,9 @@ SMSNOTIFIER_PARTNER_ID=your_partner_id_here
 SMSNOTIFIER_SHORTCODE=YourBrandName  # Optional, defaults to 'TextSMS'
 ```
 
-### Automatic Package Discovery
-
-This package supports Laravel's package auto-discovery, so the service provider and facade will be automatically registered for you.
-
-If you're using Laravel 5.5+ with package auto-discovery disabled, you'll need to manually register the service provider in `config/app.php`:
-
-```php
-'providers' => [
-    // ...
-    MCBANKSKE\FilamentSmsNotifier\SmsNotifierServiceProvider::class,
-],
-```
-
-And if you want to use the facade, add this to your `aliases` array:
-
-```php
-'aliases' => [
-    // ...
-    'SmsNotifier' => MCBANKSKE\FilamentSmsNotifier\Facades\SmsNotifier::class,
-],
-```
-
-### Requirements
-
-- PHP 8.1 or higher
-- Laravel 9.0 or higher
-- Filament 3.0 or higher
-- GuzzleHTTP (will be installed automatically)
-
 ## ⚙️ Configuration
 
-Set your default driver and credentials in `.env`:
-
-```env
-SMSNOTIFIER_DRIVER=textsms
-SMSNOTIFIER_API_KEY=your-api-key
-SMSNOTIFIER_PARTNER_ID=your-partner-id
-SMSNOTIFIER_SHORTCODE=YourShortCode
-```
-
-You can also modify the default configuration in `config/smsnotifier.php`:
+The configuration file `config/smsnotifier.php` allows you to customize the SMS gateway settings:
 
 ```php
 return [
@@ -91,18 +57,16 @@ return [
         'textsms' => [
             'api_key' => env('SMSNOTIFIER_API_KEY'),
             'partner_id' => env('SMSNOTIFIER_PARTNER_ID'),
-            'shortcode' => env('SMSNOTIFIER_SHORTCODE'),
+            'shortcode' => env('SMSNOTIFIER_SHORTCODE', 'TextSMS'),
         ],
         // Add your custom drivers here
     ],
 ];
 ```
 
-## 💡 Usage
+## 💡 Basic Usage
 
-### Using the Facade
-
-You can use the `SmsNotifier` facade to send SMS messages:
+### Option 1: Using the Facade (Recommended)
 
 ```php
 use MCBANKSKE\FilamentSmsNotifier\Facades\SmsNotifier;
@@ -118,9 +82,7 @@ if ($response['success']) {
 }
 ```
 
-### Using the Helper Function
-
-For convenience, you can also use the `sms()` helper function:
+### Option 2: Using the Helper Function
 
 ```php
 // Send an SMS using the helper function
@@ -134,9 +96,7 @@ if ($response['success']) {
 }
 ```
 
-### Using Dependency Injection
-
-You can also inject the `SmsService` directly:
+### Option 3: Using Dependency Injection
 
 ```php
 use MCBANKSKE\FilamentSmsNotifier\Services\SmsService;
@@ -157,13 +117,11 @@ public function sendWelcomeSms(SmsService $smsService)
 }
 ```
 
-## 📊 Filament Widget
+## 📊 Filament Integration
 
-The package includes a ready-to-use widget for sending test SMS messages directly from your Filament admin panel.
+### Adding the Test SMS Widget
 
-### Adding the Widget to a Page
-
-Add the widget to your Filament page's `getHeaderWidgets` or `getFooterWidgets` method:
+Add the test SMS widget to any Filament page:
 
 ```php
 use MCBANKSKE\FilamentSmsNotifier\Filament\Widgets\SendTestSmsWidget;
@@ -176,9 +134,9 @@ protected function getHeaderWidgets(): array
 }
 ```
 
-## 🧩 Creating Your Own Driver
+## 🧩 Creating a Custom Driver
 
-1. Create a new class that implements `MCBANKSKE\FilamentSmsNotifier\Contracts\SmsGatewayDriver`:
+1. Create a new driver class:
 
 ```php
 namespace App\SmsDrivers;
@@ -198,6 +156,32 @@ class MyCustomDriver implements SmsGatewayDriver
         ];
     }
 }
+```
+
+2. Register your driver in `config/smsnotifier.php`:
+
+```php
+'drivers' => [
+    'textsms' => [
+        // ... existing config
+    ],
+    'mycustom' => [
+        'driver' => 'mycustom',
+        // Add any custom configuration
+    ],
+],
+```
+
+## 📝 Requirements
+
+- PHP 8.1 or higher
+- Laravel 9.0 or higher
+- Filament 3.0 or higher
+- GuzzleHTTP (installed automatically)
+
+## 🔐 Security
+
+If you discover any security related issues, please email mcbankske@gmail.com instead of using the issue tracker.
 ```
 
 2. Register your driver in a service provider's `boot` method:
