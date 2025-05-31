@@ -2,13 +2,13 @@
 
 namespace MCBANKSKE\FilamentSmsNotifier;
 
-use Spatie\LaravelPackageTools\PackageServiceProvider;
+use Spatie\LaravelPackageTools\ServiceProvider;
 use MCBANKSKE\FilamentSmsNotifier\Services\SmsService;
 use MCBANKSKE\FilamentSmsNotifier\Drivers\TextSmsGatewayDriver;
 use MCBANKSKE\FilamentSmsNotifier\Contracts\SmsGatewayDriver;
 use Spatie\LaravelPackageTools\Package;
 
-class SmsNotifierServiceProvider extends PackageServiceProvider
+class SmsNotifierServiceProvider extends ServiceProvider
 {
     public static string $name = 'filament-sms-notifier';
 
