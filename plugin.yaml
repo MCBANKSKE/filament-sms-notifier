@@ -1,0 +1,18 @@
+name: Filament SMS Notifier
+slug: filament-sms-notifier
+description: A flexible plugin to send SMS via configurable gateways and test directly from the Filament admin panel.
+repository: https://github.com/MCBANKSKE/filament-sms-notifier
+author: MCBANKSKE
+vendor: mcbankske
+docs: README.md
+composer: mcbankske/filament-sms-notifier
+icon: message-square
+category: Communication
+keywords:
+  - sms
+  - notifications
+  - filament
+  - plugin
+  - text
+  - gateway
+  - sms-notifier
