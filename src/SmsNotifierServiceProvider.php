@@ -2,35 +2,38 @@
 
 namespace MCBANKSKE\FilamentSmsNotifier;
 
-use Spatie\LaravelPackageTools\ServiceProvider;
+use Spatie\LaravelPackageTools\Package;
+use Spatie\LaravelPackageTools\PackageServiceProvider;
 use MCBANKSKE\FilamentSmsNotifier\Services\SmsService;
 use MCBANKSKE\FilamentSmsNotifier\Drivers\TextSmsGatewayDriver;
 use MCBANKSKE\FilamentSmsNotifier\Contracts\SmsGatewayDriver;
-use Spatie\LaravelPackageTools\Package;
 
-class SmsNotifierServiceProvider extends ServiceProvider
+class SmsNotifierServiceProvider extends PackageServiceProvider
 {
-    public static string $name = 'filament-sms-notifier';
-
     public function configurePackage(Package $package): void
     {
         $package
-            ->name(self::$name)
+            ->name('filament-sms-notifier')
             ->hasConfigFile()
-            ->hasViews();
+            ->hasViews()
+            ->hasTranslations();
     }
 
     public function packageBooted(): void
     {
+        parent::packageBooted();
+
         $this->app->singleton(SmsGatewayDriver::class, function () {
+            $config = config('smsnotifier');
+            
             return new TextSmsGatewayDriver(
-                config('smsnotifier.api_key', ''),
-                config('smsnotifier.partner_id', ''),
-                config('smsnotifier.shortcode', 'TextSMS')
+                $config['api_key'] ?? '',
+                $config['partner_id'] ?? '',
+                $config['shortcode'] ?? 'TextSMS'
             );
         });
 
-        $this->app->singleton(SmsService::class, function ($app) {
+        $this->app->bind(SmsService::class, function ($app) {
             return new SmsService($app->make(SmsGatewayDriver::class));
         });
     }

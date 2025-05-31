@@ -4,7 +4,7 @@
 **Filament SMS Notifier** is a flexible and reusable [Filament](https://filamentphp.com) plugin that allows you to send SMS messages using configurable drivers. It includes a simple widget for sending test SMS directly from the Filament admin panel.
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/mcbankske/filament-sms-notifier.svg?style=flat-square)](https://packagist.org/packages/mcbankske/filament-sms-notifier)
-[![Latest Version on Packagist](https://img.shields.io/packagist/dt/mcbankske/filament-sms-notifier.svg?style=flat-square)](https://packagist.org/packages/mcbankske/filament-sms-notifier)
+[![Total Downloads](https://img.shields.io/packagist/dt/mcbankske/filament-sms-notifier.svg?style=flat-square)](https://packagist.org/packages/mcbankske/filament-sms-notifier)
 [![License](https://img.shields.io/github/license/mcbankske/filament-sms-notifier)](LICENSE.md)
 [![PHP Version](https://img.shields.io/packagist/php-v/mcbankske/filament-sms-notifier)](composer.json)
 
@@ -19,7 +19,7 @@
 
 ## 🚀 Installation
 
-Install the package via Composer:
+You can install the package via Composer:
 
 ```bash
 composer require mcbankske/filament-sms-notifier
@@ -30,6 +30,15 @@ Publish the configuration file:
 ```bash
 php artisan vendor:publish --tag=filament-sms-notifier-config
 ```
+
+This will create a `config/smsnotifier.php` file in your Laravel application where you can configure the SMS gateway settings.
+
+### Requirements
+
+- PHP 8.1 or higher
+- Laravel 9.0 or higher
+- Filament 3.0 or higher
+- GuzzleHTTP (will be installed automatically)
 
 ## ⚙️ Configuration
 
