@@ -14,9 +14,30 @@ class SmsNotifierServiceProvider extends BasePackageServiceProvider
     {
         $package
             ->name('filament-sms-notifier')
-            ->hasConfigFile()
+            ->hasConfigFile('smsnotifier')
             ->hasViews()
             ->hasTranslations();
+    }
+
+    public function packageRegistered()
+    {
+        $this->app->singleton(SmsGatewayDriver::class, function () {
+            $config = config('smsnotifier');
+            
+            if (empty($config['api_key']) || empty($config['partner_id'])) {
+                throw new \RuntimeException('SMS API credentials are not configured. Please set SMSNOTIFIER_API_KEY and SMSNOTIFIER_PARTNER_ID in your .env file.');
+            }
+            
+            return new TextSmsGatewayDriver(
+                $config['api_key'] ?? '',
+                $config['partner_id'] ?? '',
+                $config['shortcode'] ?? 'TextSMS'
+            );
+        });
+
+        $this->app->bind('filament-sms-notifier', function () {
+            return new SmsService($this->app->make(SmsGatewayDriver::class));
+        });
     }
 
     public function packageBooted(): void
