@@ -23,7 +23,7 @@
     },
     "autoload": {
         "psr-4": {
-            "MCBANKSKE\\\\FilamentSmsNotifier\\\\": "src/"
+            "MCBANKSKE\\FilamentSmsNotifier\\": "src/"
         },
         "files": [
             "src/helpers.php"
