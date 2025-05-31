@@ -19,19 +19,49 @@
 
 ## 🚀 Installation
 
-You can install the package via Composer:
+You can install the package via composer:
 
 ```bash
 composer require mcbankske/filament-sms-notifier
 ```
 
-Publish the configuration file:
+Publish the config file with:
 
 ```bash
 php artisan vendor:publish --tag=filament-sms-notifier-config
 ```
 
-This will create a `config/smsnotifier.php` file in your Laravel application where you can configure the SMS gateway settings.
+## ⚙️ Configuration
+
+Add your TextSMS API credentials to your `.env` file:
+
+```env
+SMSNOTIFIER_API_KEY=your_api_key_here
+SMSNOTIFIER_PARTNER_ID=your_partner_id_here
+SMSNOTIFIER_SHORTCODE=YourBrandName  # Optional, defaults to 'TextSMS'
+```
+
+### Automatic Package Discovery
+
+This package supports Laravel's package auto-discovery, so the service provider and facade will be automatically registered for you.
+
+If you're using Laravel 5.5+ with package auto-discovery disabled, you'll need to manually register the service provider in `config/app.php`:
+
+```php
+'providers' => [
+    // ...
+    MCBANKSKE\FilamentSmsNotifier\SmsNotifierServiceProvider::class,
+],
+```
+
+And if you want to use the facade, add this to your `aliases` array:
+
+```php
+'aliases' => [
+    // ...
+    'SmsNotifier' => MCBANKSKE\FilamentSmsNotifier\Facades\SmsNotifier::class,
+],
+```
 
 ### Requirements
 
@@ -70,9 +100,43 @@ return [
 
 ## 💡 Usage
 
-### Sending SMS Programmatically
+### Using the Facade
 
-Inject the `SmsService` and use the `send()` method:
+You can use the `SmsNotifier` facade to send SMS messages:
+
+```php
+use MCBANKSKE\FilamentSmsNotifier\Facades\SmsNotifier;
+
+// Send an SMS
+$response = SmsNotifier::send('254700000000', 'Hello from Filament SMS Notifier!');
+
+if ($response['success']) {
+    // SMS sent successfully
+} else {
+    // Handle error
+    logger()->error('Failed to send SMS: ' . $response['message']);
+}
+```
+
+### Using the Helper Function
+
+For convenience, you can also use the `sms()` helper function:
+
+```php
+// Send an SMS using the helper function
+$response = sms('254700000000', 'Hello from the helper function!');
+
+if ($response['success']) {
+    // SMS sent successfully
+} else {
+    // Handle error
+    logger()->error('Failed to send SMS: ' . $response['message']);
+}
+```
+
+### Using Dependency Injection
+
+You can also inject the `SmsService` directly:
 
 ```php
 use MCBANKSKE\FilamentSmsNotifier\Services\SmsService;

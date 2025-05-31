@@ -3,6 +3,7 @@
     "description": "A reusable Filament plugin for sending SMS notifications via multiple drivers.",
     "type": "library",
     "license": "MIT",
+    "keywords": ["filament", "sms", "notifications", "laravel", "textsms"],
     "authors": [
         {
             "name": "MCBANKSKE",
@@ -11,29 +12,49 @@
     ],
     "require": {
         "php": "^8.1",
-        "filament/filament": "^3.0",
-        "illuminate/support": "^9.0|^10.0",
+        "laravel/framework": "^9.0|^10.0",
         "guzzlehttp/guzzle": "^7.8",
-        "spatie/laravel-package-tools": "^1.0"
+        "spatie/laravel-package-tools": "^1.16"
     },
     "require-dev": {
         "orchestra/testbench": "^7.0|^8.0",
         "phpunit/phpunit": "^9.5|^10.0",
         "pestphp/pest": "^1.21"
     },
-
     "autoload": {
         "psr-4": {
-            "MCBANKSKE\\FilamentSmsNotifier\\": "src/"
+            "MCBANKSKE\\\\FilamentSmsNotifier\\\\": "src/"
+        },
+        "files": [
+            "src/helpers.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "MCBANKSKE\\\\FilamentSmsNotifier\\\\Tests\\\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "phpstan/extension-installer": true
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "MCBANKSKE\\FilamentSmsNotifier\\SmsNotifierServiceProvider"
-            ]
+                "MCBANKSKE\\\\FilamentSmsNotifier\\\\SmsNotifierServiceProvider"
+            ],
+            "aliases": {
+                "SmsNotifier": "MCBANKSKE\\\\FilamentSmsNotifier\\\\Facades\\\\SmsNotifier"
+            }
         }
     },
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "prefer-stable": true
 }
