@@ -1,8 +1,10 @@
+
 # Filament SMS Notifier
 
 **Filament SMS Notifier** is a flexible and reusable [Filament](https://filamentphp.com) plugin that allows you to send SMS messages using configurable drivers. It includes a simple widget for sending test SMS directly from the Filament admin panel.
 
-[![Latest Version](https://img.shields.io/packagist/v/mcbankske/filament-sms-notifier)](https://packagist.org/packages/mcbankske/filament-sms-notifier)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/mcbankske/filament-sms-notifier.svg?style=flat-square)](https://packagist.org/packages/mcbankske/filament-sms-notifier)
+[![Latest Version on Packagist](https://img.shields.io/packagist/dt/mcbankske/filament-sms-notifier.svg?style=flat-square)](https://packagist.org/packages/mcbankske/filament-sms-notifier)
 [![License](https://img.shields.io/github/license/mcbankske/filament-sms-notifier)](LICENSE.md)
 [![PHP Version](https://img.shields.io/packagist/php-v/mcbankske/filament-sms-notifier)](composer.json)
 
