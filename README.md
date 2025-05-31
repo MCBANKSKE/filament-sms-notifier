@@ -174,10 +174,10 @@ class MyCustomDriver implements SmsGatewayDriver
 
 ## 📝 Requirements
 
-- PHP 8.1 or higher
-- Laravel 9.0 or higher
+- PHP 8.2 or higher
+- Laravel 9.0, 10.0, 11.0, or 12.0
 - Filament 3.0 or higher
-- GuzzleHTTP (installed automatically)
+- GuzzleHTTP 7.0 or higher (installed automatically)
 
 ## 🔐 Security
 
