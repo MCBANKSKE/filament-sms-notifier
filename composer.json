@@ -48,10 +48,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "MCBANKSKE\\\\FilamentSmsNotifier\\\\SmsNotifierServiceProvider"
+                "MCBANKSKE\\FilamentSmsNotifier\\SmsNotifierServiceProvider"
             ],
             "aliases": {
-                "SmsNotifier": "MCBANKSKE\\\\FilamentSmsNotifier\\\\Facades\\\\SmsNotifier"
+                "SmsNotifier": "MCBANKSKE\\FilamentSmsNotifier\\Facades\\SmsNotifier"
             }
         }
     },
